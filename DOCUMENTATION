@@ -1,0 +1,116 @@
+Estructura de la base de datos:
+
+
+Usuarios: tienen array de sus dispositivos asociados.
+
+Device: tienen array de las alarmas hechas cada uno.
+
+Alarmas: todas las alarmas de un usuario, incluyendo de distintos dispositivos.
+
+REST API(protected by token):
+
+getLastAlarms: obtener las últimas alarmas del usuario, ordenadas cronológicamente.
+  INPUT: email
+  OUTPUT: JSON, structure:
+    {
+      alarmas: [
+        {
+          latitud: ,
+          longitud: ,
+          batería: ,
+          tiempo: ,
+          extra: ,
+
+        },
+        {
+        }
+      ]
+    }
+
+getLastAlarmsFromDevice: obtener las últimas alarmas del dispositivo.
+  INPUT: email, device
+  OUTPUT: same from getLastAlarms
+
+getPerfil: obtener perfil del usuario.
+  INPUT: email
+  OUTPUT: native.
+
+getDevices: obtener los dispositios del usuario.
+  INPUT: email
+  OUTPUT: native
+
+
+Controladores: controlar acciones del usuario.
+
+AuthController: Login y signup.
+
+UserController: suscribir dispositivos, registrar token móvil, crear token o cookie.
+
+REQUISITOS
+
+1. NPM.
+2. NODE.
+3. MONGODB.
+
+INSTALACIÓN
+
+1. Carpeta principal Backend, instalamos las dependencias necesarias.
+
+        $ npm install 
+
+2. Iniciamos el servicio MongoDB.
+
+        $ sudo mongo
+        
+3. En una nueva consola ejecutar el backend del servidor.
+
+        $ sails lift --prod 
+
+OPCIONAL: El servidor esta montado sobre la plataforma Azure de Microsoft Bizspark, se puede acceder a el mediante la siguiente IP: 52.174.33.2.
+
+Recomiendo el uso de Postman para la comprobación de las rutas.
+
+Todas las rutas estan protegidas por JWT con lo que solo se aceptara las conexiones con el token en la cabecera.
+
+Empezamos obteniendo el token necesario:
+
+POST /user/create
+
+BODY: 
+{
+    "email":"user@gmail.com"
+    "password":"user"
+    "confirmPassword":"user"
+}
+
+SUSCRIBIR dispositivo
+
+Cada vez que se registre un usario se debe introducir manualmente la suscripción del dispositivo al usuario mediante la API
+de lo contrario no tendra ningún dispositivo asociado.
+
+url.com/suscribir?email=....&device=...&group=....
+
+REGISTRAR token
+
+Registro de token para la app de java.
+
+url.com/registrar_token?token=....&email=.....
+
+APLICACIÓN Java
+
+Toda la aplicación java utiliza el soporte de Google Firebase para enviar las notificaciones
+
+Uso la api rest para la obtención de los datos de los dispositivos o los usuarios.
+
+
+
+FUTURO
+
+utilizar seqNumber de Sigfox para implementar control de notificaciones y evitar ataques de reply attack.
+
+utilizar la información adicional en junto con los datos de gps para añadir más precisión o incluir altura.
+
+separar los endpoint entre diferentes servidores conectados a la misma base de datos
+
+
+
